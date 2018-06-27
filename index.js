@@ -5,13 +5,10 @@ const gcs = require('@google-cloud/storage')();
 const path = require('path');
 const sharp = require('sharp');
 const requestLib = require('request');
-/**
- * When an image is uploaded in the Storage bucket We generate a thumbnail automatically using
- * Sharp.
- */
+
 exports.imageResize = (request, response) => {
   
-  const fileLocation = request.body.file_location //Remote location of current file.
+  const fileLocation = request.body.file_location //Remote image url
   const imageWidth = parseInt(request.body.width)
   const imageHeight = parseInt(request.body.height)
   
@@ -24,10 +21,9 @@ exports.imageResize = (request, response) => {
 
   const fileName = path.basename(fileLocation);
   
-  // Download file from bucket.
   const bucket = gcs.bucket(fileBucket);
 
-  // We add a 'thumb_' prefix to thumbnails file name. That's where we'll upload the thumbnail.
+  // We add a 'thumb_' prefix to thumbnails file name.
   const thumbFileName = `thumb_`+imageWidth+`_${fileName}`;
   
   // Create write stream for uploading thumbnail
@@ -36,6 +32,7 @@ exports.imageResize = (request, response) => {
   // Create Sharp pipeline for resizing the image and use pipe to read from bucket read stream
   const pipeline = sharp();
   
+  //Perform the resize operation
   pipeline
     .resize(imageWidth, imageHeight)
     .max()
@@ -48,6 +45,7 @@ exports.imageResize = (request, response) => {
     thumbnailUploadStream.on('finish', resolve).on('error', reject)
   );
   
+  //After resize, get signed url from Google Storage
   streamAsPromise.then(() => {
       // Get a signed URL for the file
       gcs.bucket(fileBucket)
