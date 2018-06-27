@@ -25,10 +25,6 @@ Returns JSON:
    thumbnail: {{Google Cloud signed URL}}
 ```
 
-or 
-
-```resized: false```
-
 
 ## Development setup
 
@@ -36,6 +32,10 @@ Clone the repository on your machine and run
 
 ```
 npm install
+```
+
+```
+gcloud beta functions deploy imageResize --trigger-http
 ```
 
 ## Release History
