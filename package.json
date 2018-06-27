@@ -1,0 +1,17 @@
+{
+  "name": "image-resize-googlecloud",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sunilshenoy",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/storage": "^1.7.0",
+    "path": "^0.12.7",
+    "request": "^2.87.0",
+    "sharp": "^0.20.3"
+  }
+}
